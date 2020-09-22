@@ -1,4 +1,5 @@
 # kgsql
+https://kagasan.github.io/kgsql/
 # 欲しい機能
 - オンラインセーブ
 - エディタ
