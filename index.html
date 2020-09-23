@@ -12,6 +12,7 @@
 
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/4043559c10.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -21,24 +22,42 @@
     
     <!-- kgtable.js -->
     <script src = "kgtable.js"></script>
-
+    
     <!-- sample -->
     <script src = "script.js"></script>
+
+    <!-- ace -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous"></script>
 </head>
 <body>
-    <input type='text' id='input' placeholder="ENTER SOME SQL" size='50'
-    value="SELECT pv_table.userid, pv_table.pv, user_table.age FROM pv_table JOIN user_table ON pv_table.userid = user_table.userid;">
-    
-    <button id='submit'>Execute</button>
-
-    <pre id='result'></pre>
-    <pre id='error'></pre>
-    <h2>input</h2>
-    <div id="kgtbl1"></div>
-    <h2>output</h2>
-    <div id="kgtbl2"></div>
-    <h2>about</h2>
-    https://github.com/sql-js/sql.js
+    <div class="kgsql"><p class="px-2 py-1">KGSQL ブラウザで実行するSQL練習エディタ</p></div>
+    <div id="editor">SELECT
+    pv_table.userid, pv_table.pv, user_table.age
+FROM
+    pv_table
+JOIN
+    user_table
+ON
+    pv_table.userid = user_table.userid
+;</div>    
+    <div id="panel">
+        <button type="button" class="btn btn-success m-2" id='submit'>Execute</button>
+        <button type="button" class="btn btn-info m-2" id="upload"><i class="fas fa-cloud-upload-alt"></i> URL発行</button>
+        <ul class="nav nav-tabs m-2">
+            <li class="nav-item"><a href="#tab1" class="nav-link active" data-toggle="tab">Input</a></li>
+            <li class="nav-item"><a href="#tab2" id="nav2" class="nav-link" data-toggle="tab">OutPut</a></li>
+            <li class="nav-item"><a href="#tab3" id="nav3" class="nav-link" data-toggle="tab">Test</a></li>
+            <li class="nav-item"><a href="#tab4" id="nav4" class="nav-link" data-toggle="tab">Log</a></li>
+            <li class="nav-item"><a href="#tab5" class="nav-link" data-toggle="tab">About</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab1" class="tab-pane active"><div id="kgtbl1"></div></div>
+            <div id="tab2" class="tab-pane"><div id="kgtbl2"></div></div>
+            <div id="tab3" class="tab-pane">まだないよ〜</div>
+            <div id="tab4" class="tab-pane"><pre id='result'><textarea id="logta" class="form-control" rows="10"></textarea></pre><pre id='error'></pre></div>
+            <div id="tab5" class="tab-pane"><ul><li>https://github.com/sql-js/sql.js</li><li>https://github.com/ajaxorg/ace</li></ul></div>
+        </div>        
+    </div>
 </body>
 
 </html>

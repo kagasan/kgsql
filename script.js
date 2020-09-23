@@ -1,18 +1,28 @@
 $(function(){
+
+    const editor = ace.edit("editor", {
+        theme: "ace/theme/chrome",
+        mode: "ace/mode/sql",
+        minLines: 15,
+        maxLines: 15
+    });
+    editor.resize();
+    editor.session.setMode("ace/mode/sql");
+
     const kgtbl1 = new KGTable("kgtbl1");
-    const kgtbl2 = new KGTable("kgtbl2");
+    const kgtbl2 = new KGTable("kgtbl2", true);
 
     kgtbl1.addTable(2, 3);
     kgtbl1.setTableName(1, "pv_table");
     kgtbl1.setTableHead(1, 1, "userid", "VARCHAR(20)");
     kgtbl1.setTableHeadName(1, 2, "pv");
-    kgtbl1.setTable(1, [["1", 10], ["3", 30], ["5", 50]]);
+    kgtbl1.setTable(1, [["user1", 10], ["user3", 30], ["user5", 50]]);
 
     kgtbl1.addTable(2, 5);
     kgtbl1.setTableName(2, "user_table");
     kgtbl1.setTableHead(2, 1, "userid", "VARCHAR(20)");
     kgtbl1.setTableHeadName(2, 2, "age");
-    kgtbl1.setTable(2, [["1", 20], ["2", 25], ["3", 30], ["4", 35], ["5", 40]]);
+    kgtbl1.setTable(2, [["user1", 20], ["user2", 25], ["user3", 30], ["user4", 35], ["user5", 40]]);
     
 
     let db;
@@ -24,7 +34,8 @@ $(function(){
         // console.log("1");
         kgtbl2.clearTable();
         // console.log("2");
-        const sql = kgtbl1.makeQuery() + document.getElementById('input').value;
+        const sql = kgtbl1.makeQuery() + editor.getValue();
+        $("#logta").val("-- 実行sql\n" + sql);
         // console.log(sql);
         let result = '', error = '';
         try { result = db.exec(sql); }
@@ -42,6 +53,15 @@ $(function(){
             kgtbl2.setTable(tableNo, result[i].values);
         }
         // document.getElementById('result').innerHTML = JSON.stringify(result, null, '  ');
-        document.getElementById('error').innerHTML = error;
+        if (error != '') {
+            document.getElementById('error').innerHTML = error;
+            $("#nav4").click();
+        } else {
+            $("#nav2").click();
+        }
     };
+
+    $("#upload").on('click', function(){
+        $("#nav3").click();
+    });
 });

@@ -1,19 +1,23 @@
 class KGTable{
-    constructor(id) {
+    constructor(id, hideFlag = false) {
         const _self = this;
         _self.id = id;
         _self.tableId = 0;
+        _self.hideFlag = hideFlag;
         $(`#${_self.id}`).html(`<button type="button" class="btn btn-sm btn-primary" id="${_self.id}_addTable"><i class="fas fa-plus"></i> add a table</button><div id="${_self.id}_tables"></div>`);
         $(`#${_self.id}_addTable`).on('click', function() {
             _self.addTable();
         });
+        if (hideFlag) {
+            $(`#${_self.id}_addTable`).hide();
+        }
         // _self.test();
     }
     addTable(cols = 0, rows = 0){
         const _self = this;
         _self.tableId++;
         $(`#${_self.id}_tables`).append(`<div id = "${_self.id}_table${_self.tableId}" class="border mx-2 my-2"></div>`);
-        $(`#${_self.id}_table${_self.tableId}`).append(`<form class="namearea form-inline p-2"><input type="text" class="form-control" id = "${_self.id}_tableName_${_self.tableId}" value="table${_self.tableId}"><button type="button" class="btn btn-sm btn-danger" id="${_self.id}_dropTable_${_self.tableId}"><i class="fas fa-times"></i> drop this table</button></form>`);
+        $(`#${_self.id}_table${_self.tableId}`).append(`<form id = "${_self.id}_nameform_${_self.tableId}" class="namearea form-inline p-2"><input type="text" class="form-control" id = "${_self.id}_tableName_${_self.tableId}" value="table${_self.tableId}"><button type="button" class="btn btn-sm btn-danger" id="${_self.id}_dropTable_${_self.tableId}"><i class="fas fa-times"></i> drop this table</button></form>`);
         $(`#${_self.id}_table${_self.tableId}`).append(`<div id = "${_self.id}_ctl_${_self.tableId}" class = "p-2">hoge</div>`);
         $(`#${_self.id}_table${_self.tableId}`).append(`<table id = "${_self.id}_${_self.tableId}_mat" border="1" rows="0" cols="0"  class = "m-2"><tbody><tr><th></th></tr></tbody></table>`);
         $(`#${_self.id}_dropTable_${_self.tableId}`).on('click', function() {
@@ -37,7 +41,10 @@ class KGTable{
         $(`#${_self.id}_ctl_${_self.tableId}_down`).on('click', function() {
             _self.addRow($(this).parent().parent().find("table").attr('id'));
         });        
-        
+        if (_self.hideFlag) {
+            $(`#${_self.id}_nameform_${_self.tableId}`).hide();
+            $(`#${_self.id}_ctl_${_self.tableId}`).hide();
+        }
         const tableDomId = `${_self.id}_${_self.tableId}_mat`;
         for (let i = 0; i < cols; i++) _self.addCol(tableDomId);
         for (let i = 0; i < rows; i++) _self.addRow(tableDomId);
