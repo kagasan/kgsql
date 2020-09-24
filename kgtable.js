@@ -228,6 +228,86 @@ class KGTable{
         }        
         return query;
     }
+    setFromJSON(input) {
+        const _self = this;
+        _self.clearTable();
+        const result = JSON.parse(input);
+        for (let i = 0; i < result.length; i++) {
+            const tableNo = i + 1;
+            const cols = result[i].columns.length; 
+            const rows = result[i].values.length;
+            _self.addTable(cols, rows);
+            _self.setTableName(tableNo, result[i].name);
+            for (let j = 0; j < cols; j++) {
+                _self.setTableHead(tableNo, j + 1, result[i].columns[j], null);
+            }
+            if (result[i].types) {
+                for (let j = 0; j < cols; j++) {
+                    _self.setTableHeadType(tableNo, j + 1, result[i].types[j]);
+                }        
+            }
+            _self.setTable(tableNo, result[i].values);
+        }
+    }
+    getJSON(type = false){
+        const _self = this;
+        const arr = [];
+        const num = _self.tableNum();
+        for (let i = 1; i <= num; i++) {
+            let hs = {};
+            const cols = _self.tableCols(i);
+            const rows = _self.tableRows(i);
+            hs.name = _self.tableName(i);
+            const names = [];
+            const types = [];
+            for (let j = 1; j <= cols; j++) {
+                names.push(_self.tableHead(i, j).name);
+                types.push(_self.tableHead(i, j).type);
+            }
+            hs.columns = names;
+            if (type) {
+                hs.types = types;
+            }
+            const values = [];
+            for (let row = 1; row <= rows; row++) {
+                const value = [];
+                for (let col = 1; col <= cols; col++) {
+                    value.push(_self.tableBody(i, col, row));
+                }
+                values.push(value);
+            }
+            hs.values = values;
+            arr.push(hs);
+        }
+        return JSON.stringify(arr);
+    }
+    check(json) {
+        const _self = this;
+        const A = JSON.parse(_self.getJSON());
+        const B = JSON.parse(json);
+        if (A.length != B.length) return false;
+        for (let i = 0; i < A.length; i++) {
+            const colsA = A[i].columns.length; 
+            const rowsA = A[i].values.length;
+            const colsB = B[i].columns.length; 
+            const rowsB = B[i].values.length;
+            if (colsA != colsB) return false;
+            if (rowsA != rowsB) return false;
+            for (let col = 0; col < colsA; col++) {
+                if (A[i].columns[col] != B[i].columns[col]) {
+                    return false;
+                }
+            }
+            for (let row = 0; row < rowsA; row++) {
+                for (let col = 0; col < colsA; col++) {
+                    if (A[i].values[row][col] != B[i].values[row][col]) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
     test() {
         const _self = this;
         _self.addTable(2, 3);

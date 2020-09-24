@@ -4,13 +4,14 @@ $(function(){
         theme: "ace/theme/chrome",
         mode: "ace/mode/sql",
         minLines: 15,
-        maxLines: 15
+        maxLines: 30
     });
     editor.resize();
     editor.session.setMode("ace/mode/sql");
 
     const kgtbl1 = new KGTable("kgtbl1");
     const kgtbl2 = new KGTable("kgtbl2", true);
+    const kgtbl3 = new KGTable("kgtbl3");
 
     kgtbl1.addTable(2, 3);
     kgtbl1.setTableName(1, "pv_table");
@@ -37,10 +38,12 @@ $(function(){
         const sql = kgtbl1.makeQuery() + editor.getValue();
         $("#logta").val("-- 実行sql\n" + sql);
         // console.log(sql);
+        document.getElementById('error').innerHTML = '';
         let result = '', error = '';
         try { result = db.exec(sql); }
         catch (e) { error = e; }
-        // console.log(result);
+        // kgtbl3.setFromJSON(JSON.stringify(result));
+        // console.log(JSON.parse(kgtbl1.getJSON()));
         for (let i = 0; i < result.length; i++) {
             const tableNo = i + 1;
             const cols = result[i].columns.length;
@@ -57,11 +60,25 @@ $(function(){
             document.getElementById('error').innerHTML = error;
             $("#nav4").click();
         } else {
+            if (kgtbl2.check(kgtbl3.getJSON())) {
+                $("#testbadge").text("test passed");
+                $("#testbadge").attr('class', "badge badge-success");
+            } else {
+                $("#testbadge").text("test result");
+                $("#testbadge").attr('class', "badge badge-secondary");                
+            }
             $("#nav2").click();
+            // console.log(kgtbl1.getJSON());
         }
     };
 
     $("#upload").on('click', function(){
+        // $("#nav3").click();
+
+    });
+
+    $("#o2t").on('click', function(){
+        kgtbl3.setFromJSON(kgtbl2.getJSON());
         $("#nav3").click();
     });
 });

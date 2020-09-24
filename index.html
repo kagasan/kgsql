@@ -30,7 +30,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="kgsql"><p class="px-2 py-1">KGSQL ブラウザで実行するSQL練習エディタ</p></div>
+    <div class="kgsql"><p class="px-2 py-1">KGSQL ブラウザで実行するSQLエディタ</p></div>
     <div id="editor">SELECT
     pv_table.userid, pv_table.pv, user_table.age
 FROM
@@ -50,10 +50,10 @@ ON
             <li class="nav-item"><a href="#tab4" id="nav4" class="nav-link" data-toggle="tab">Log</a></li>
             <li class="nav-item"><a href="#tab5" class="nav-link" data-toggle="tab">About</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content p-2">
             <div id="tab1" class="tab-pane active"><div id="kgtbl1"></div></div>
-            <div id="tab2" class="tab-pane"><div id="kgtbl2"></div></div>
-            <div id="tab3" class="tab-pane">まだないよ〜</div>
+            <div id="tab2" class="tab-pane"><button id="o2t" class="btn btn-info btn-sm"><i class="fas fa-plane-departure"></i> 結果をテストに反映</button> <span id="testbadge" class="badge badge-secondary">test result</span><div id="kgtbl2"></div></div>
+            <div id="tab3" class="tab-pane"><div id="kgtbl3"></div></div>
             <div id="tab4" class="tab-pane"><pre id='result'><textarea id="logta" class="form-control" rows="10"></textarea></pre><pre id='error'></pre></div>
             <div id="tab5" class="tab-pane"><ul><li>https://github.com/sql-js/sql.js</li><li>https://github.com/ajaxorg/ace</li></ul></div>
         </div>        
