@@ -28,6 +28,7 @@ $(function(){
     editor.resize();
     editor.session.setMode("ace/mode/sql");
     editor.focus();
+    editor.setValue('ロード中', -1);
 
     const kgtbl1 = new KGTable("kgtbl1");
     const kgtbl2 = new KGTable("kgtbl2", true);
@@ -111,7 +112,6 @@ $(function(){
                     db = new SQL.Database();
                     db.exec('select 1;');
                 });
-                $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
             } else {
                 jump();
             }
@@ -120,11 +120,11 @@ $(function(){
             jump();
         });
     } else{
+        editor.setValue('', -1);
         initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
             db = new SQL.Database();
             db.exec('select 1;');
         });
-        $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
     }
     $("#gototop").on('click', function(){
         jump();
