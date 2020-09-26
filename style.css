@@ -2,6 +2,9 @@ body{
     background-color: whitesmoke;
     height: 100%;
 }
+#gototop {
+    cursor: pointer;
+}
 /* #editor { 
     position: absolute;
     top: 0;

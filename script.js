@@ -1,4 +1,24 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyBgkjo1nhIDb95HH1P4FbhS6hl7pUik0ac",
+    authDomain: "kgsql-a0c98.firebaseapp.com",
+    databaseURL: "https://kgsql-a0c98.firebaseio.com",
+    projectId: "kgsql-a0c98",
+    storageBucket: "kgsql-a0c98.appspot.com",
+    messagingSenderId: "919616296031",
+    appId: "1:919616296031:web:b058ae7a9847f95df077ea"
+};
+// Initialize Firebase
+
 $(function(){
+
+    function jump(cid = ""){
+        let url = window.location.href.split('?')[0];
+        if (cid != "") url += "?id=" + cid;
+        location.href = url;
+    }
+
+    firebase.initializeApp(firebaseConfig);
+    const fdb = firebase.firestore();
 
     const editor = ace.edit("editor", {
         theme: "ace/theme/chrome",
@@ -13,17 +33,17 @@ $(function(){
     const kgtbl2 = new KGTable("kgtbl2", true);
     const kgtbl3 = new KGTable("kgtbl3");
 
-    kgtbl1.addTable(2, 3);
-    kgtbl1.setTableName(1, "pv_table");
-    kgtbl1.setTableHead(1, 1, "userid", "VARCHAR(20)");
-    kgtbl1.setTableHeadName(1, 2, "pv");
-    kgtbl1.setTable(1, [["user1", 10], ["user3", 30], ["user5", 50]]);
+    // kgtbl1.addTable(2, 3);
+    // kgtbl1.setTableName(1, "pv_table");
+    // kgtbl1.setTableHead(1, 1, "userid", "VARCHAR(20)");
+    // kgtbl1.setTableHeadName(1, 2, "pv");
+    // kgtbl1.setTable(1, [["user1", 10], ["user3", 30], ["user5", 50]]);
 
-    kgtbl1.addTable(2, 5);
-    kgtbl1.setTableName(2, "user_table");
-    kgtbl1.setTableHead(2, 1, "userid", "VARCHAR(20)");
-    kgtbl1.setTableHeadName(2, 2, "age");
-    kgtbl1.setTable(2, [["user1", 20], ["user2", 25], ["user3", 30], ["user4", 35], ["user5", 40]]);
+    // kgtbl1.addTable(2, 5);
+    // kgtbl1.setTableName(2, "user_table");
+    // kgtbl1.setTableHead(2, 1, "userid", "VARCHAR(20)");
+    // kgtbl1.setTableHeadName(2, 2, "age");
+    // kgtbl1.setTable(2, [["user1", 20], ["user2", 25], ["user3", 30], ["user4", 35], ["user5", 40]]);
     
 
     let db;
@@ -43,6 +63,8 @@ $(function(){
         try { result = db.exec(sql); }
         catch (e) { error = e; }
         // kgtbl3.setFromJSON(JSON.stringify(result));
+        // console.log(kgtbl1.getJSON(true));
+        // console.log(kgtbl3.getJSON());
         // console.log(JSON.parse(kgtbl1.getJSON()));
         for (let i = 0; i < result.length; i++) {
             const tableNo = i + 1;
@@ -73,7 +95,18 @@ $(function(){
     };
 
     $("#upload").on('click', function(){
-        // $("#nav3").click();
+        fdb.collection("documents").add({
+            code: encodeURI(editor.getValue()),
+            input: encodeURI(kgtbl1.getJSON(true)),
+            test: encodeURI(kgtbl3.getJSON())
+        })
+        .then(function(docRef){
+            // location.href = "index.html?id=" + docRef.id;
+            jump(docRef.id);
+        })
+        .catch(function(error){
+            console.log(error);
+        });
 
     });
 
@@ -81,4 +114,36 @@ $(function(){
         kgtbl3.setFromJSON(kgtbl2.getJSON());
         $("#nav3").click();
     });
+
+
+    const codeId = getQuerry("id");
+    if (codeId != "none") {
+        fdb.collection('documents')
+        .doc(codeId)
+        .get()
+        .then(function(doc){
+            if (doc.exists) {
+                editor.setValue(decodeURI(doc.data().code), -1);
+                kgtbl1.setFromJSON(decodeURI(doc.data().input));
+                kgtbl3.setFromJSON(decodeURI(doc.data().test));
+            } else {
+                jump();
+            }
+        })
+        .catch(function(error){
+            jump();
+        });
+    }
+    $("#gototop").on('click', function(){
+        jump();
+    });
 });
+function getQuerry(key = "id", none = "none"){
+    const url = window.location.search;
+    const hash  = url.slice(1).split('&');    
+    for (let i = 0; i < hash.length; i++) {
+        const sp = hash[i].split('='); 
+        if (sp[0] == key)return sp[1];
+    }
+    return none;
+}
