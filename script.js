@@ -140,23 +140,12 @@ $(function(){
     });
     $('#editor').keydown(function(e){
         const ev = e || window.event;
-        console.log("1" + ev.keyCode);
         if(window.event.ctrlKey){
-            console.log("2" + ev.keyCode);
             if(ev.keyCode === 13){
-                console.log("3" + ev.keyCode);
                 $('#submit').click();
                 return false;
             }
-        }
-    });
-    $('#editor').keydown(function(e){
-        const ev = e || window.event;
-        console.log("4" + ev.keyCode);
-        if(window.event.ctrlKey){
-            console.log("5" + ev.keyCode);
             if(ev.keyCode === 83){
-                console.log("6" + ev.keyCode);
                 $('#upload').click();
                 return false;
             }
