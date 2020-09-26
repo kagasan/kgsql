@@ -28,6 +28,7 @@ $(function(){
     });
     editor.resize();
     editor.session.setMode("ace/mode/sql");
+    editor.focus();
 
     const kgtbl1 = new KGTable("kgtbl1");
     const kgtbl2 = new KGTable("kgtbl2", true);
@@ -136,6 +137,24 @@ $(function(){
     }
     $("#gototop").on('click', function(){
         jump();
+    });
+    $('#editor').keydown(function(e){
+        const ev = e || window.event;
+        if(event.ctrlKey){
+            if(ev.keyCode === 13){
+                $('#submit').click();
+                return false;
+            }
+        }
+    });
+    $('#editor').keydown(function(e){
+        const ev = e || window.event;
+        if(event.ctrlKey){
+            if(ev.keyCode === 83){
+                $('#upload').click();
+                return false;
+            }
+        }
     });
 });
 function getQuerry(key = "id", none = "none"){
