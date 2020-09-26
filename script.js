@@ -110,8 +110,8 @@ $(function(){
                 initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
                     db = new SQL.Database();
                     db.exec('select 1;');
-                    $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
                 });
+                $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
             } else {
                 jump();
             }
@@ -123,8 +123,8 @@ $(function(){
         initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
             db = new SQL.Database();
             db.exec('select 1;');
-            $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
         });
+        $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
     }
     $("#gototop").on('click', function(){
         jump();
