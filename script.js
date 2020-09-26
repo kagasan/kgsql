@@ -10,7 +10,6 @@ const firebaseConfig = {
 // Initialize Firebase
 
 $(function(){
-
     function jump(cid = ""){
         let url = window.location.href.split('?')[0];
         if (cid != "") url += "?id=" + cid;
@@ -34,39 +33,16 @@ $(function(){
     const kgtbl2 = new KGTable("kgtbl2", true);
     const kgtbl3 = new KGTable("kgtbl3");
 
-    // kgtbl1.addTable(2, 3);
-    // kgtbl1.setTableName(1, "pv_table");
-    // kgtbl1.setTableHead(1, 1, "userid", "VARCHAR(20)");
-    // kgtbl1.setTableHeadName(1, 2, "pv");
-    // kgtbl1.setTable(1, [["user1", 10], ["user3", 30], ["user5", 50]]);
-
-    // kgtbl1.addTable(2, 5);
-    // kgtbl1.setTableName(2, "user_table");
-    // kgtbl1.setTableHead(2, 1, "userid", "VARCHAR(20)");
-    // kgtbl1.setTableHeadName(2, 2, "age");
-    // kgtbl1.setTable(2, [["user1", 20], ["user2", 25], ["user3", 30], ["user4", 35], ["user5", 40]]);
-    
-
     let db;
-    initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
-        db = new SQL.Database();
-    });
 
-    document.getElementById('submit').onclick = function () {
-        // console.log("1");
+    function submit() {
         kgtbl2.clearTable();
-        // console.log("2");
         const sql = kgtbl1.makeQuery() + editor.getValue();
         $("#logta").val("-- 実行sql\n" + sql);
-        // console.log(sql);
         document.getElementById('error').innerHTML = '';
         let result = '', error = '';
         try { result = db.exec(sql); }
         catch (e) { error = e; }
-        // kgtbl3.setFromJSON(JSON.stringify(result));
-        // console.log(kgtbl1.getJSON(true));
-        // console.log(kgtbl3.getJSON());
-        // console.log(JSON.parse(kgtbl1.getJSON()));
         for (let i = 0; i < result.length; i++) {
             const tableNo = i + 1;
             const cols = result[i].columns.length;
@@ -78,7 +54,6 @@ $(function(){
             }
             kgtbl2.setTable(tableNo, result[i].values);
         }
-        // document.getElementById('result').innerHTML = JSON.stringify(result, null, '  ');
         if (error != '') {
             document.getElementById('error').innerHTML = error;
             $("#nav4").click();
@@ -91,9 +66,11 @@ $(function(){
                 $("#testbadge").attr('class', "badge badge-secondary");                
             }
             $("#nav2").click();
-            // console.log(kgtbl1.getJSON());
         }
     };
+    $('#submit').on('click', function(){
+        submit();
+    });
 
     $("#upload").on('click', function(){
         fdb.collection("documents").add({
@@ -103,7 +80,10 @@ $(function(){
         })
         .then(function(docRef){
             // location.href = "index.html?id=" + docRef.id;
-            jump(docRef.id);
+            let url = window.location.href.split('?')[0] + "?id=" + docRef.id;
+            $("#newUrl").text(url);
+            $("#newUrl").attr('href', url);
+            // jump(docRef.id);
         })
         .catch(function(error){
             console.log(error);
@@ -127,12 +107,23 @@ $(function(){
                 editor.setValue(decodeURI(doc.data().code), -1);
                 kgtbl1.setFromJSON(decodeURI(doc.data().input));
                 kgtbl3.setFromJSON(decodeURI(doc.data().test));
+                initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
+                    db = new SQL.Database();
+                    db.exec('select 1;');
+                    $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
+                });
             } else {
                 jump();
             }
         })
         .catch(function(error){
             jump();
+        });
+    } else{
+        initSqlJs({ locateFile: filename => `../dist/${filename}` }).then(function (SQL) {
+            db = new SQL.Database();
+            db.exec('select 1;');
+            $('#gototop').text('KGSQL ブラウザで実行するSQLエディタ');
         });
     }
     $("#gototop").on('click', function(){

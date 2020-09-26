@@ -12,8 +12,8 @@
     <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-firestore.js"></script>
 
     <!-- sql js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.3.0/dist/sql-asm.js" integrity="sha512-H8TViT+QiY3wA7xw5JdT9acYAnUjoNmYisFBaiZ4cOC7doLrVAZu1g6KsgKCQryDkaEdlhdZpHiB+/oiMs1arg==" crossorigin="anonymous"></script>
-
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.3.0/dist/sql-asm.js" integrity="sha512-H8TViT+QiY3wA7xw5JdT9acYAnUjoNmYisFBaiZ4cOC7doLrVAZu1g6KsgKCQryDkaEdlhdZpHiB+/oiMs1arg==" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.1.0/dist/sql-asm.js" integrity="sha512-V0SI+LYUfxAX0Cg7D7QLmy7YjQe7b55xyuE1+rYUnxcbYXnGSYe+Ta/JSmqpx5NcfEqw9D5T5tnJH+2w2Jktdw==" crossorigin="anonymous"></script>
 
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/4043559c10.js" crossorigin="anonymous"></script>
@@ -35,11 +35,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="kgsql"><p class="px-2 py-1" id="gototop">KGSQL ブラウザで実行するSQLエディタ</p></div>
+    <div class="kgsql"><p class="px-2 py-1" id="gototop">ロード中</p></div>
     <div id="editor"></div>    
     <div id="panel">
         <button type="button" class="btn btn-success m-2" id='submit'>Execute (Ctrl+Enter)</button>
         <button type="button" class="btn btn-info m-2" id="upload"><i class="fas fa-cloud-upload-alt"></i> URL発行 (Ctrl+s)</button>
+        <a id="newUrl"></a>
         <ul class="nav nav-tabs m-2">
             <li class="nav-item"><a href="#tab1" class="nav-link active" data-toggle="tab">Input</a></li>
             <li class="nav-item"><a href="#tab2" id="nav2" class="nav-link" data-toggle="tab">OutPut</a></li>
